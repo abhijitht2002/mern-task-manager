@@ -41,13 +41,32 @@ exports.getTasksByUserId = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
   try {
-    const task = await Task.findOne({
-      _id: req.params.id,
-      user: req.user.id,
+    const updateData = { ...req.body };
+
+    if (req.body.status === "completed") {
+      updateData.completedAt = new Date();
+    }
+
+    if (req.body.status && req.body.status !== "completed") {
+      updateData.completedAt = null;
+    }
+
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Task updated successfully",
     });
-
-
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 exports.deleteTask = async (req, res) => {

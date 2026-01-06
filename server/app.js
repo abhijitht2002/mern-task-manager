@@ -16,6 +16,7 @@ connectDB();
 
 // routes
 app.use('/api/auth', require('./routes/userRoutes'));
+app.use('/api', require('./routes/taskRoutes'));
 
 // start server
 app.listen(port, () => {
