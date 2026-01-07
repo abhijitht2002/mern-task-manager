@@ -1,19 +1,13 @@
 import { useState } from "react";
 
-function TaskForm({ onAdd }) {
+function TaskForm({ onSubmit }) {
   const [task, setTask] = useState("");
   const [dueDate, setDueDate] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!task.trim()) return;
 
-    const res = await api.post("/tasks", {
-      task,
-      dueDate: dueDate || undefined,
-    });
-
-    onAdd(res.data.data);
+    onSubmit({ task, dueDate: dueDate || undefined });
     setTask("");
     setDueDate("");
   };
@@ -34,7 +28,10 @@ function TaskForm({ onAdd }) {
         className="p-2 rounded-md bg-[#f2ede4]"
       />
 
-      <button className="px-4 bg-[#3b2f2f] text-[#faf7f2] rounded-md">
+      <button
+        type="submit"
+        className="px-4 bg-[#3b2f2f] text-[#faf7f2] rounded-md"
+      >
         add
       </button>
     </form>

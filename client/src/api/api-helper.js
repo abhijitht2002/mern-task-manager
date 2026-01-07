@@ -44,14 +44,8 @@ const getAllTasksByUser = async () => {
 
 // add task
 const addTask = async (formData) => {
-  const payload = {
-    name: formData.name,
-    contact_info: `${formData.phone}, ${formData.email}`,
-    status: formData.status,
-  };
-
   try {
-    const res = await axios.post(`${baseUrl}/tasks`, payload, {
+    const res = await axios.post(`${baseUrl}/tasks`, formData, {
       headers: { Authorization: `Bearer ${getToken()}` },
     });
     return res.data;
@@ -60,6 +54,9 @@ const addTask = async (formData) => {
     throw error;
   }
 };
+
+const getToggledStatus = (status) =>
+  status === "completed" ? "pending" : "completed";
 
 // delete task
 const deleteTask = async (id) => {
@@ -76,14 +73,8 @@ const deleteTask = async (id) => {
 
 // update task
 const updateTask = async (id, formData) => {
-  const payload = {
-    name: formData.name,
-    contact_info: `${formData.phone}, ${formData.email}`,
-    status: formData.status,
-  };
-
   try {
-    const res = await axios.patch(`${baseUrl}/tasks/${id}`, payload, {
+    const res = await axios.patch(`${baseUrl}/tasks/${id}`, formData, {
       headers: { Authorization: `Bearer ${getToken()}` },
     });
     return res.data;
